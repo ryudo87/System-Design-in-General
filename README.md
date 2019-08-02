@@ -42,3 +42,109 @@ Identify and address bottlenecks, given the constraints.  For example, do you ne
 * Horizontal scaling
 * Caching
 * Database sharding
+
+
+## Availability vs consistency
+
+### CAP theorem
+
+<p align="center">
+  <img src="http://i.imgur.com/bgLMI2u.png"/>
+  <br/>
+  <i><a href=http://robertgreiner.com/2014/08/cap-theorem-revisited>Source: CAP theorem revisited</a></i>
+</p>
+
+#### AP - availability and partition tolerance
+
+AP is a good choice if the business needs allow for [eventual consistency](#eventual-consistency) or 
+when the system needs to continue working despite external errors.
+
+## Consistency patterns
+### Weak consistency
+
+After a write, reads may or may not see it.  A best effort approach is taken.
+
+This approach is seen in systems such as memcached.   real time use cases such as VoIP, video chat, and realtime multiplayer games.  
+
+### Eventual consistency
+
+After a write, reads will eventually see it .  Data is replicated asynchronously.
+
+DNS and email.  Eventual consistency in highly available systems.
+
+### Strong consistency
+
+After a write, reads will see it.  Data is replicated synchronously.
+
+file systems and RDBMSes.  Strong consistency works well in systems that need transactions.
+
+* **Availability** vs **consistency**
+
+## 1) Availability patterns
+
+two main patterns to support high availability: **fail-over** and **replication**.
+
+### Fail-over
+
+#### Active-passive (master-slave failover)
+
+With active-passive fail-over, **heartbeats** are sent between the active and the passive server on **standby**.  
+If the heartbeat is interrupted, the passive server takes over the active's IP address and resumes service.
+
+The length of downtime is determined by whether the passive server is already running in 'hot' standby 
+or whether it needs to start up from 'cold' standby.  Only the active server handles traffic.
+
+
+#### Active-active (master-master failover)
+
+In active-active, both servers are managing traffic, spreading the load between them.
+
+If the servers are public-facing, the DNS would need to know about the public IPs of both servers.  
+If the servers are internal-facing, application logic would need to know about both servers.
+
+
+### Disadvantage(s): failover
+
+* more hardware and additional complexity.
+* There is a potential for loss of data if the active system fails before any newly written data can be replicated to the passive.
+
+
+
+
+### 2) Replication
+
+#### Master-slave and master-master
+
+* [Master-slave replication](#master-slave-replication)
+* [Master-master replication](#master-master-replication)
+
+### Availability in numbers
+
+Availability is often quantified by uptime (or downtime) as a percentage of time the service is available. 
+Availability is generally measured in number of 9s--a service with 99.99% availability is described as having four 9s.
+
+
+#### Availability in parallel vs in sequence
+
+If a service consists of multiple components prone to failure, the service's overall availability depends on whether the components are in sequence or in parallel.
+
+###### In sequence
+
+Overall availability decreases when two components with availability < 100% are in sequence:
+
+```
+Availability (Total) = Availability (Foo) * Availability (Bar)
+```
+
+If both `Foo` and `Bar` each had 99.9% availability, their total availability in sequence would be 99.8%.
+
+###### In parallel
+
+Overall availability increases when two components with availability < 100% are in parallel:
+
+```
+Availability (Total) = 1 - (1 - Availability (Foo)) * (1 - Availability (Bar))
+```
+
+If both `Foo` and `Bar` each had 99.9% availability, their total availability in parallel would be 99.9999%.
+
