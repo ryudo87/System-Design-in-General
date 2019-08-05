@@ -43,7 +43,14 @@ Identify and address bottlenecks, given the constraints.  For example, do you ne
 * Caching
 * Database sharding
 
+------------ ACE A SYSTEMS DESIGN INTERVIEW---------------------------
 
+
+
+
+
+
+---------------------------------------
 ## Availability vs consistency
 
 ### CAP theorem
