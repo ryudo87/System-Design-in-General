@@ -64,6 +64,9 @@ Identify and address bottlenecks, given the constraints.  For example, do you ne
   <i><a href=http://robertgreiner.com/2014/08/cap-theorem-revisited>Source: CAP theorem revisited</a></i>
 </p>
 
+
+     
+
 #### AP - availability and partition tolerance
 
 AP is a good choice if the business needs allow for [eventual consistency](#eventual-consistency) or 
@@ -129,4 +132,23 @@ If the servers are internal-facing, application logic would need to know about b
 * [Master-master replication](#master-master-replication)
 
 
+# Web Site Scalability
+<p align="center">
+  <img src="http://2.bp.blogspot.com/_j6mB7TMmJJY/R9F3_4qXpgI/AAAAAAAAAAs/-qYU9ZKhEpo/s320/scalable.png"/>
+  <br/>
+  <i><a href=http://robertgreiner.com/2014/08/cap-theorem-revisitedhttp://horicky.blogspot.com/2008/03/web-site-scalability.html>Web Site Scalability</a></i>
+</p>
 
+A classical large scale web site typically have multiple data centers in geographically distributed locations. Each data center will typically have the following tiers in its architecture
+Web tier : Serving static contents (static pages, photos, videos)
+App tier : Serving dynamic contents and execute the application logic (dynamic pages, order processing, transaction processing)
+Data tier: Storing persistent states (Databases, Filesystems)
+
+## Content Delivery
+#### Dynamic Content
+it is possible to pre-generate dynamic content and store it as static content. When the real request comes in, instead of re-running the application logic to generate the page, we just need to lookup the pre-generated page, which can be much faster
+#### Static Content
+CDN is an effective solution for delivering static contents. CDN provider will cache the static content in their network and will return the cached copy for subsequent HTTP fetch request. 
+
+ ## Session state handling
+ 
