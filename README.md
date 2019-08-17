@@ -1,4 +1,5 @@
 http://www.mitbbs.com/article_t/JobHunting/32777529.html
+http://www.learn4master.com/interview-questions/system-design/system-design面试
 
 # System-Design-in-General
 ## How to approach a system design interview question
