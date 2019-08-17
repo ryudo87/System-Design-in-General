@@ -150,5 +150,12 @@ it is possible to pre-generate dynamic content and store it as static content. W
 #### Static Content
 CDN is an effective solution for delivering static contents. CDN provider will cache the static content in their network and will return the cached copy for subsequent HTTP fetch request. 
 
- ## Session state handling
- 
+## Session state handling
+#### Memory-based session state with Load balancer affinity
+One way is to store the state in the App Server's local memory. But we need to make sure subsequent request land on the same App Server instance 
+#### Persist session state to a DB
+accessed by any App Server inside the pool
+#### On-demand session state migration
+Under this model, the cookie will be used to store the IP address of the last app server who process the client request
+When the next request comes in, the dispatcher is free to forward to any members of the pool. The app server which receive this request will examine the IP address of the last server and pull over the session state from there.
+#### Embed session state inside cookies
